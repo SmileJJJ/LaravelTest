@@ -1,6 +1,8 @@
 <?php
 namespace  App\Http\Controllers;
 
+use App\Http\Requests\Request;
+use App\Student;
 use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
@@ -110,4 +112,129 @@ class StudentController extends Controller
         var_dump($sum);
     }
 
+    public function orm1()
+    {
+        //all()
+      //  $students=Student::all();
+
+        //find()
+      //  $students=Student::find(1);
+
+        //findorfail //查询不到就报错
+       // $students=Student::findorfail(2);
+
+       // $students=Student::get();
+
+//        $students=Student::where('id','>','1')
+//        ->orderby('age','desc')
+//        ->first();
+
+//        echo '<pre>';
+//        Student::chunk(2,function($student){
+//            var_dump($student);
+//        });
+     //   dd($students);
+
+        //聚合函数
+     //   $num=Student::count();
+      //  $num=Student::sum('age');
+      //  $num=Student::avg('age');
+      //  var_dump($num);
+    }
+    public function orm2()
+    {
+        //使用模型新增数据
+//        $student= new Student();
+//        $student->name='shenjian1';
+//        $student->age=20;
+//        $bool=$student->save();
+//        dd($bool);
+//        $Student=Student::find(13);
+//        echo date('Y-m-d H:i:s'); //,$Student->created_at
+        //使用模型的create方法新增数据
+//        $student=Student::create(
+//            ['name'=>'sj','age'=>21]
+//        );
+//        dd($student);
+        //firstorcreated 以属性查找用户，若没有，则新增，并取得新的实例
+//        $student=Student::firstOrcreate(
+//            ['name'=>'sjj']
+//        );
+        //firstornew  //和created不同在于，新增但是不会自动保存进数据库，需要手动保存
+        $student=Student::firstornew(
+            ['name'=>'sjjj']
+        );
+        $bool=$student->save();
+        dd($bool);
+
+    }
+    public function orm3()
+    {
+        //通过模型更新数据
+//        $student=Student::find(1);
+//        $student->name='kitty';
+//        $bool=$student->save();
+//        dd($bool);
+        $num=Student::where('id','>',8)->update(
+            ['age'=>55]
+        );
+        var_dump($num);
+    }
+
+    public function orm4()
+    {
+        //通过模型删除
+//        $student=Student::find(16);
+//        $bool=$student->delete();
+//        dd($bool);
+        //通过主键删除
+      //  $num=Student::destroy(14,14);
+//        $num=Student::destroy([10,11]);
+//        dd($num);
+        //删除指定条件数据
+        $num=Student::where('age','>',30)->delete();
+        dd($num);
+    }
+
+    public function section1()
+    {
+        $students=Student::get();
+       // $students=[];
+        $name='xutao';
+        $arr=['yage','xutao'];
+        return view('student.section1',[
+            'name'=>$name,
+            'arr'=>$arr,
+            'students'=>$students,
+        ]);
+    }
+
+    public function urlTest()
+    {
+        return '徐涛是溜溜球';
+    }
+
+    public function request1(\Illuminate\Http\Request  $request)
+    {
+        //1.取值
+        //echo $request->input('name');
+        //echo $request->input('sax','未知');
+//        if($request->has('name'))
+//        {
+//            echo $request->input('name');
+//        }
+//        else{echo '无该参数';}
+//        $ary=$request->all();
+//        dd($ary);
+        //2.判断请求类型
+//        echo $request->method();
+//        if($request->isMethod('get'))
+//        {echo  'YES';}
+//        else {echo 'NO';}
+//        $res=$request->ajax();
+//        var_dump($res);
+//        $res=$request->is('student/*');
+//        var_dump($res);
+        echo  $request->url();
+    }
 }
